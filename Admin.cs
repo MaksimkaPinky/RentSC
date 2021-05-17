@@ -16,5 +16,12 @@ namespace RentSC
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            UserRegistr frm = new UserRegistr();
+            frm.Show();
+            this.Hide();
+        }
     }
 }

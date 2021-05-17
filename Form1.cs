@@ -12,6 +12,7 @@ namespace RentSC
 {
     public partial class Form1 : Form
     {
+        public static Form1 FORMA { get; set; }
         public static Сотрудники USER { get; set; }
         Model1 db = new Model1();
         public Form1()
@@ -42,38 +43,43 @@ namespace RentSC
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(textBox1.Text==""||textBox2.Text=="")
+            if (textBox1.Text == "" || textBox2.Text == "")
             {
                 MessageBox.Show("Заполните все поля");
                 return;
             }
-            Сотрудники usr = db.Сотрудники.Find(textBox1.Text);
-            if ((usr != null) && (usr.Пароль == textBox2.Text))
-            {
-                USER = usr;
-                if (usr.Роль == "Администратор")
+            foreach (Сотрудники usr in db.Сотрудники)
                 {
-                    Admin frm = new Admin();
-                    frm.Show();
-                    this.Hide();
-                }
-                else if (usr.Роль == "Менеджер С")
+                if ((usr != null) && (usr.Пароль == textBox2.Text))
                 {
-                    Manager frm = new Manager();
-                    frm.Show();
-                    this.Hide();
+                    USER = usr;
+                    if (usr.Роль == "Администратор")
+                    {
+                        Admin frm = new Admin();
+                        frm.Show();
+                        this.Hide();
+                    }
+                    else if (usr.Роль == "Менеджер С")
+                    {
+                        Manager frm = new Manager();
+                        frm.Show();
+                        this.Hide();
+                    }
+                    else if (usr.Роль == "Менеджер А")
+                    {
+                        ManagerA frm = new ManagerA();
+                        frm.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Роли {usr.Роль} в системе нет!");
+                        return;
+                    }
                 }
-                else
-                {
-                    MessageBox.Show($"Роли {usr.Роль} в системе нет!");
-                    return;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пользователя с таким логином и паролем нет!");
-                return;
+
             }
         }
+        
     }
 }
