@@ -1,0 +1,190 @@
+USE [master]
+GO
+/****** Object:  Database [user3]    Script Date: 17.05.2021 14:57:24 ******/
+CREATE DATABASE [user3]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'user3', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\user3.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'user3_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\user3_log.ldf' , SIZE = 5184KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [user3] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [user3].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [user3] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [user3] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [user3] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [user3] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [user3] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [user3] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [user3] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [user3] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [user3] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [user3] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [user3] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [user3] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [user3] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [user3] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [user3] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [user3] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [user3] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [user3] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [user3] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [user3] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [user3] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [user3] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [user3] SET RECOVERY FULL 
+GO
+ALTER DATABASE [user3] SET  MULTI_USER 
+GO
+ALTER DATABASE [user3] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [user3] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [user3] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [user3] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [user3] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'user3', N'ON'
+GO
+ALTER DATABASE [user3] SET QUERY_STORE = OFF
+GO
+USE [user3]
+GO
+/****** Object:  User [perlova]    Script Date: 17.05.2021 14:57:24 ******/
+CREATE USER [perlova] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[Аренда]    Script Date: 17.05.2021 14:57:24 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Аренда](
+	[ID Аренды] [int] IDENTITY(1,1) NOT NULL,
+	[ID Арендатора] [int] NOT NULL,
+	[Название ТЦ] [nvarchar](50) NOT NULL,
+	[ID сотрудника] [int] NOT NULL,
+	[№ Павильона] [nvarchar](50) NOT NULL,
+	[Статус] [nvarchar](50) NOT NULL,
+	[Начало аренды] [date] NOT NULL,
+	[Окончание аренды] [date] NOT NULL,
+ CONSTRAINT [PK_Аренда] PRIMARY KEY CLUSTERED 
+(
+	[ID Аренды] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Арендаторы]    Script Date: 17.05.2021 14:57:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Арендаторы](
+	[ID Арендатора] [int] IDENTITY(1,1) NOT NULL,
+	[Название] [nvarchar](50) NOT NULL,
+	[Номер телефона] [nvarchar](50) NOT NULL,
+	[Адрес] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Арендаторы] PRIMARY KEY CLUSTERED 
+(
+	[ID Арендатора] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Павильоны]    Script Date: 17.05.2021 14:57:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Павильоны](
+	[ID Павильона] [int] IDENTITY(1,1) NOT NULL,
+	[Название ТЦ] [nvarchar](50) NULL,
+	[№ Павильона] [nvarchar](50) NULL,
+	[Этаж] [nvarchar](50) NULL,
+	[Статус] [nvarchar](50) NULL,
+	[Площадь] [float] NULL,
+	[Стоимость за кв. м.] [money] NULL,
+	[Кооэф.Добавочной стоимости] [float] NULL,
+ CONSTRAINT [PK_Павильоны] PRIMARY KEY CLUSTERED 
+(
+	[ID Павильона] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Сотрудники]    Script Date: 17.05.2021 14:57:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Сотрудники](
+	[ID Сторудника] [int] IDENTITY(1,1) NOT NULL,
+	[ФИО] [nvarchar](50) NOT NULL,
+	[Логин] [nvarchar](50) NOT NULL,
+	[Пароль] [nvarchar](50) NOT NULL,
+	[Роль] [nvarchar](50) NOT NULL,
+	[Пол] [nvarchar](2) NOT NULL,
+	[Номер телефона] [nvarchar](50) NOT NULL,
+	[Фото] [image] NULL,
+ CONSTRAINT [PK_Сотрудники_1] PRIMARY KEY CLUSTERED 
+(
+	[ID Сторудника] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ТЦ]    Script Date: 17.05.2021 14:57:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ТЦ](
+	[ID ТЦ] [int] IDENTITY(1,1) NOT NULL,
+	[Название] [nvarchar](50) NOT NULL,
+	[Статус] [nvarchar](50) NOT NULL,
+	[Количество павильонов] [nvarchar](50) NOT NULL,
+	[Город] [nvarchar](50) NOT NULL,
+	[Стоимость] [money] NOT NULL,
+	[Кооэф.Добавочной стоимости] [float] NOT NULL,
+	[Этажность] [nvarchar](50) NOT NULL,
+	[Изображения] [image] NULL,
+ CONSTRAINT [PK_ТЦ] PRIMARY KEY CLUSTERED 
+(
+	[ID ТЦ] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Аренда]  WITH CHECK ADD  CONSTRAINT [FK_Аренда_Арендаторы] FOREIGN KEY([ID Арендатора])
+REFERENCES [dbo].[Арендаторы] ([ID Арендатора])
+GO
+ALTER TABLE [dbo].[Аренда] CHECK CONSTRAINT [FK_Аренда_Арендаторы]
+GO
+USE [master]
+GO
+ALTER DATABASE [user3] SET  READ_WRITE 
+GO
